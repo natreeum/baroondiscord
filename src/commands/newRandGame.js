@@ -1,6 +1,7 @@
 const { ButtonBuilder, ButtonStyle, ActionRowBuilder } = require("discord.js");
 const newRandGame = require("../../prisma/scripts/newRandGame");
 const getRandGameWithChannel = require("../../prisma/scripts/getRandGameWithChannel");
+const getTimestamp = require("../utils/getTimestamp");
 
 module.exports = {
   data: require("./commandBuilders/newRandGame"),
@@ -61,7 +62,11 @@ module.exports = {
         roles
       );
       const channel = interaction.channel;
-      let message = `[#${createGameRes.id}]번 추첨이벤트가 생성되었습니다!\n\`\`\`${createGameRes.title}\`\`\`\n종료일시 : <t:${createGameRes.end}>`;
+      let message = `[#${
+        createGameRes.id
+      }]번 추첨이벤트가 생성되었습니다!\n\`\`\`${
+        createGameRes.title
+      }\`\`\`\n종료일시 : <t:${getTimestamp(createGameRes.end)}>`;
       if (createGameRes.roles.length) {
         message += `\n참여가능역할 : `;
         for (r of createGameRes.roles.split(" ")) {

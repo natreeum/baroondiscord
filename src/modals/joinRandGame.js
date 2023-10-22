@@ -2,6 +2,7 @@ const { ButtonBuilder, ActionRowBuilder, ButtonStyle } = require("discord.js");
 const getRandGameById = require("../../prisma/scripts/getRandGameWithId");
 const newRandGamer = require("../../prisma/scripts/newRandGamer");
 const nameGenerator = require("../utils/nameGenerator");
+const getTimestamp = require("../utils/getTimestamp");
 
 module.exports = async function (interaction) {
   try {
@@ -28,16 +29,28 @@ module.exports = async function (interaction) {
 
     const row = new ActionRowBuilder().addComponents(joinBtn);
 
-    await interaction.deferUpdate();
+    const timestamp = getTimestamp(randGame.end);
 
     await channel.send({
       content: `🔔\n**[#${eventId}]**번 이벤트에 익명의 \`${nameGenerator()}\` 님이 참여했습니다!\n\`\`\`${message}\`\`\``,
     });
+
+    let resMsg = `**[#${eventId}]**번 추첨이벤트 : \`${randGame.title}\`\n종료일시 : <t:${timestamp}>`;
+    if (randGame.roles.length) {
+      resMsg += `\n참여가능역할 : `;
+      for (r of randGame.roles.split(" ")) {
+        resMsg += `<@&${r}>`;
+      }
+    }
+
     await channel.send({
-      content: `**[#${eventId}]**번 추첨이벤트 : \`${randGame.title}\`\n종료일시 : <t:${randGame.end}>`,
+      content: resMsg,
       components: [row],
     });
+
+    await interaction.deferUpdate();
   } catch (e) {
+    console.log(e);
     return interaction.reply({
       ephemeral: true,
       content: "상호작용에 실패했습니다.",

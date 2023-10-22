@@ -26,8 +26,8 @@ module.exports = async function (interaction) {
     });
   }
 
-  const allowedRoles = gameData.roles.split(" ");
-  if (allowedRoles.length) {
+  if (gameData.roles.length) {
+    const allowedRoles = gameData.roles.split(" ");
     let flag = false;
     for (let r of allowedRoles) {
       if (interaction.member.roles.cache.has(r)) {
