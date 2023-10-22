@@ -34,7 +34,7 @@ module.exports = async function (interaction) {
       content: `🔔\n**[#${eventId}]**번 이벤트에 익명의 \`${nameGenerator()}\` 님이 참여했습니다!\n\`\`\`${message}\`\`\``,
     });
     await channel.send({
-      content: `**[#${eventId}]**번 추첨이벤트 : \`${randGame.title}\``,
+      content: `**[#${eventId}]**번 추첨이벤트 : \`${randGame.title}\`\n종료일시 : <t:${randGame.end}>`,
       components: [row],
     });
   } catch (e) {

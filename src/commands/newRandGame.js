@@ -61,7 +61,7 @@ module.exports = {
         roles
       );
       const channel = interaction.channel;
-      let message = `[#${createGameRes.id}]번 추첨이벤트가 생성되었습니다!\n\`\`\`${createGameRes.title}\`\`\``;
+      let message = `[#${createGameRes.id}]번 추첨이벤트가 생성되었습니다!\n\`\`\`${createGameRes.title}\`\`\`\n종료일시 : <t:${createGameRes.end}>`;
       if (createGameRes.roles.length) {
         message += `\n참여가능역할 : `;
         for (r of createGameRes.roles.split(" ")) {
