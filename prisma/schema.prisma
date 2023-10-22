@@ -1,0 +1,47 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model auction {
+  id           Int     @id @default(autoincrement())
+  title        String
+  description  String
+  startPrice   Int
+  currentPrice Int     @default(0)
+  inProgress   Boolean @default(true)
+  bidPrice     Int
+  channelId    String?
+  start        String
+  end          String
+}
+
+model bid {
+  id        Int    @id @default(autoincrement())
+  auctionId Int
+  userId    String
+  price     Int
+}
+
+model randGame {
+  id         Int     @id @default(autoincrement())
+  title      String
+  end        String
+  channelId  String
+  inProgress Boolean @default(true)
+  roles      String  @default("")
+}
+
+model randGamers {
+  id      Int    @id @default(autoincrement())
+  gameId  Int
+  userId  String
+  message String
+}
