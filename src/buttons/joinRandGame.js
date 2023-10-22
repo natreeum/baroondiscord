@@ -12,7 +12,7 @@ module.exports = async function (interaction) {
     interaction.message.content.split("#")[1].split("]")[0]
   );
   const gameData = await getRandGameWithId(eventId);
-  if (!gameData)
+  if (!gameData || !gameData.inProgress)
     return interaction.reply({
       ephemeral: true,
       content: "이미 종료된 이벤트이거나 존재하지 않는 이벤트 입니다.",

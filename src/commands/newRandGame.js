@@ -75,6 +75,9 @@ module.exports = {
       }
       await channel.send({
         content: message,
+      });
+      await channel.send({
+        content: `[#${createGameRes.id}] \`${createGameRes.title}\``,
         components: [row],
       });
       await interaction.reply({

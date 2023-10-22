@@ -36,12 +36,6 @@ module.exports = async function (interaction) {
     });
 
     let resMsg = `**[#${eventId}]**번 추첨이벤트 : \`${randGame.title}\`\n종료일시 : <t:${timestamp}>`;
-    if (randGame.roles.length) {
-      resMsg += `\n참여가능역할 : `;
-      for (r of randGame.roles.split(" ")) {
-        resMsg += `<@&${r}>`;
-      }
-    }
 
     await channel.send({
       content: resMsg,
