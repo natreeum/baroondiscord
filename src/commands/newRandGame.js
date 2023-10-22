@@ -10,12 +10,13 @@ module.exports = {
       const endsAt = interaction.options.getString("종료일시");
       const allowedRoles = interaction.options.getString("참여가능역할") ?? "";
       let roles = allowedRoles.length ? allowedRoles : "";
-      for (let i of roles.split(" "))
-        if (i.length !== 19)
-          return interaction.reply({
-            ephemeral: true,
-            content: `참여가능역할을 다시 확인해 주세요.`,
-          });
+      if (roles.length)
+        for (let i of roles.split(" "))
+          if (i.length !== 19)
+            return interaction.reply({
+              ephemeral: true,
+              content: `참여가능역할을 다시 확인해 주세요.`,
+            });
 
       if (endsAt.length !== 12)
         return await interaction.reply({
