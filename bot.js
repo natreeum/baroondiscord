@@ -10,7 +10,9 @@ const { Client, Events, GatewayIntentBits, Collection } = require("discord.js");
 const { token } = require("./config.json");
 
 // Create a new client instance
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
+});
 
 // import button Handler
 const buttonHandler = require("./src/buttons/buttonHandler");
@@ -18,6 +20,7 @@ const buttonHandler = require("./src/buttons/buttonHandler");
 // import modal Handler
 const modalHandler = require("./src/modals/modalHandler");
 const checkRandGame = require("./src/utils/checkRandGame");
+const checkRoles = require("./src/utils/checkRoles");
 
 // setting commands
 client.commands = new Collection();
@@ -92,4 +95,8 @@ client.login(token);
 cron.schedule("* * * * *", async () => {
   checkAuction(getCurTimestamp(), client);
   checkRandGame(client);
+});
+
+cron.schedule("0 0 * * *", async () => {
+  checkRoles(client);
 });
