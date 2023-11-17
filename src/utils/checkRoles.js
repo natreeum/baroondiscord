@@ -111,21 +111,45 @@ module.exports = async function checkRoles(client) {
     });
   });
 
-  const message = newRoleMembers
-    .filter((e) => {
-      return e.members.length;
-    })
-    .map((e) => {
-      console.log(e);
-      return { role: e.roleId, members: e.members.map((e) => e.id) };
-    })
-    .map((e) => {
-      return `<@&${e.role}> \n\n${e.members.reduce((acc, cur) => {
-        return acc + `<@${cur.id}>\n`;
-      }, "")}`;
-    })
-    .reduce((e) => {
-      return `${e}\n\n`;
-    }, "");
-  console.log(message);
+  const newRoleMembersData = newRoleMembers.filter((e) => {
+    return e.members.length !== 0;
+  });
+  const channelId = "1143558012162801715";
+  const channel = await client.channels.fetch(channelId);
+  if (newRoleMembersData.length !== 0)
+    await channel.send(
+      newRoleMembersData
+        .map((e) => {
+          return { role: e.roleId, members: e.members.map((e) => e.id) };
+        })
+        .map((e) => {
+          return `<@&${e.role}> \n\n${e.members.reduce((acc, cur) => {
+            return acc + `<@${cur}>\n`;
+          }, "")}`;
+        })
+        .reduce((acc, e) => {
+          return `${acc}${e}\n\n`;
+        }, "**역할 추가됨**\n\n")
+    );
+
+  const delRoleMembersData = removedRoleMembers.filter((e) => {
+    return e.members.length !== 0;
+  });
+
+  if (delRoleMembersData.length !== 0) {
+    await channel.send(
+      removedRoleMembers
+        .map((e) => {
+          return { role: e.roleId, members: e.members.map((e) => e.id) };
+        })
+        .map((e) => {
+          return `<@&${e.role}> \n\n${e.members.reduce((acc, cur) => {
+            return `${acc}<@${cur}>\n`;
+          }, "")}`;
+        })
+        .reduce((acc, e) => {
+          return `${acc}${e}\n\n`;
+        }, "**역할 제거됨**\n\n")
+    );
+  }
 };
