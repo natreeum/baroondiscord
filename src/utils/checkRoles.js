@@ -17,10 +17,10 @@ const config = require("../../config.json");
 
 module.exports = async function checkRoles(client) {
   const youtubeRoles = [
-    new role("1146727648307978333", "Youtube Member: TTC타이거 1알"),
-    new role("1146727648307978334", "Youtube Member: 흑축 10알"),
-    new role("1146727648307978335", "Youtube Member: 흑축 20알"),
-    new role("1146727648307978336", "Youtube Member: 흑축 30알"),
+    new role("1224325541361090561", "Youtube Member: TTC타이거 1알"),
+    new role("1224325541361090562", "Youtube Member: 흑축 10알"),
+    new role("1224325541361090563", "Youtube Member: 흑축 20알"),
+    new role("1224325541361090564", "Youtube Member: 흑축 30알"),
   ];
   const manualRoles = [
     new role("1165529959251574966", "[M]TTC타이거 1알"),
@@ -29,10 +29,10 @@ module.exports = async function checkRoles(client) {
     new role("1146659499856367746", "[M]흑축 30알"),
   ];
   const matchedRole = [
-    new roleMatching("1146727648307978333", "1165529959251574966"),
-    new roleMatching("1146727648307978334", "1143585404973494353"),
-    new roleMatching("1146727648307978335", "1143585456106262649"),
-    new roleMatching("1146727648307978336", "1146659499856367746"),
+    new roleMatching("1224325541361090561", "1165529959251574966"),
+    new roleMatching("1224325541361090562", "1143585404973494353"),
+    new roleMatching("1224325541361090563", "1143585456106262649"),
+    new roleMatching("1224325541361090564", "1146659499856367746"),
   ];
 
   const guild = await client.guilds.fetch(config.guildId);
