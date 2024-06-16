@@ -1,3 +1,4 @@
+const { shouldUseGlobalFetchAndWebSocket } = require("discord.js");
 const roleConfig = require("../utils/roleConfigs");
 
 module.exports = {
@@ -80,11 +81,15 @@ module.exports = {
       await channel.send(sendingMessage);
 
       const selectedIdx = Math.floor(Math.random() * randomBox.length);
+      if (randomBox[selectedIdx] === undefined) {
+        await channel.send("당첨자가 없습니다.");
+        return interaction.deferReply();
+      }
 
       const selectedMessage = `🎉당첨을 축하합니다!!🎉\n\n<@${randomBox[selectedIdx]}>`;
       await channel.send(selectedMessage);
 
-      return interaction.reply("check the console");
+      return interaction.deferReply();
     } catch (e) {
       console.log(e);
       return interaction.reply("오류가 발생했습니다. 다시 시도해 주세요.");
