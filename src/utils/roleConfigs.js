@@ -40,5 +40,6 @@ module.exports = {
     new ticketAmountForRoles("1143585404973494353", 1),
     new ticketAmountForRoles("1143585456106262649", 2),
     new ticketAmountForRoles("1146659499856367746", 3),
+    new ticketAmountForRoles("1143585234911248444", 3),
   ],
 };

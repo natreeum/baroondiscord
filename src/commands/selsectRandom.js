@@ -1,15 +1,25 @@
-const { shouldUseGlobalFetchAndWebSocket } = require("discord.js");
 const roleConfig = require("../utils/roleConfigs");
+const { adminRoleId, baroonId } = require("../../config.json");
 
 module.exports = {
   data: require("./commandBuilders/selectRandom"),
   async execute(interaction) {
     try {
-      await interaction.reply("추첨을 시작합니다.");
       const guild = interaction.guild;
       const channel = interaction.channel;
       let messages = [];
       let lastMessageId = null;
+
+      const commandUser = interaction.user.id;
+      const userData = await guild.members.fetch(commandUser);
+      const roles = userData.roles.cache.map((role) => role.id);
+      if (!roles.includes(adminRoleId))
+        return interaction.reply({
+          ephemeral: true,
+          content: "권한이 없습니다.",
+        });
+
+      await interaction.reply("추첨을 시작합니다.");
 
       const youtubeMembershipRoles = roleConfig.ticketsForRole.map(
         (e) => e.roleId
@@ -18,7 +28,7 @@ module.exports = {
       let sendingMessage = "";
 
       const ticketsForRoleMessage = roleConfig.ticketsForRole
-        .map((e) => `<@&${e.roleId}> : ${e.amount}번`)
+        .map((e) => `<@&${e.roleId}> : 티켓 ${e.amount}개`)
         .join(`\n`);
       sendingMessage = ticketsForRoleMessage + `\n==========`;
 
@@ -40,6 +50,7 @@ module.exports = {
       const users = await Promise.all(
         messages
           .filter((e) => e.author.bot === false)
+          .filter((e) => e.author.id != baroonId)
           .map(async (e) => {
             const id = e.author.id;
             const userData = await guild.members.fetch(id);
@@ -75,9 +86,11 @@ module.exports = {
           randomBox.push(u.id);
         }
       }
-      console.log(randomBox);
 
       await channel.send(sendingMessage);
+
+      const randomBoxList = randomBox.map((e) => `<@${e}>`).join("\n");
+      await channel.send(randomBoxList);
 
       const selectedIdx = Math.floor(Math.random() * randomBox.length);
       if (randomBox[selectedIdx] === undefined) {
