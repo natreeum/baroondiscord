@@ -82,6 +82,7 @@ module.exports = {
       const selectedIdx = Math.floor(Math.random() * randomBox.length);
       if (randomBox[selectedIdx] === undefined) {
         await channel.send("당첨자가 없습니다.");
+        return;
       }
 
       const selectedMessage = `🎉당첨을 축하합니다!!🎉\n\n<@${randomBox[selectedIdx]}>`;
