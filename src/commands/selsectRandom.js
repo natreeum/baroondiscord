@@ -5,6 +5,7 @@ module.exports = {
   data: require("./commandBuilders/selectRandom"),
   async execute(interaction) {
     try {
+      await interaction.reply("추첨을 시작합니다.");
       const guild = interaction.guild;
       const channel = interaction.channel;
       let messages = [];
@@ -16,12 +17,10 @@ module.exports = {
 
       let sendingMessage = "";
 
-      const startSelectingMsg = "추첨을 시작합니다.\n";
       const ticketsForRoleMessage = roleConfig.ticketsForRole
         .map((e) => `<@&${e.roleId}> : ${e.amount}번`)
         .join(`\n`);
-      sendingMessage =
-        startSelectingMsg + ticketsForRoleMessage + `\n==========`;
+      sendingMessage = ticketsForRoleMessage + `\n==========`;
 
       while (true) {
         const options = { limit: 100 };
@@ -83,16 +82,14 @@ module.exports = {
       const selectedIdx = Math.floor(Math.random() * randomBox.length);
       if (randomBox[selectedIdx] === undefined) {
         await channel.send("당첨자가 없습니다.");
-        return interaction.deferReply();
       }
 
       const selectedMessage = `🎉당첨을 축하합니다!!🎉\n\n<@${randomBox[selectedIdx]}>`;
       await channel.send(selectedMessage);
-
-      return interaction.deferReply();
     } catch (e) {
       console.log(e);
-      return interaction.reply("오류가 발생했습니다. 다시 시도해 주세요.");
+      const message = await interaction.fetchReply();
+      return message.reply("오류가 발생했습니다. 다시 시도해 주세요.");
     }
   },
 };
