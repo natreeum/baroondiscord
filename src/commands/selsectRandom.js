@@ -71,14 +71,22 @@ module.exports = {
         }
         return { id, role };
       });
+      const ticketCountMessage = [];
       const hasRoleUsers = matchingRole
         .filter((e) => e.role.length > 0)
-        .map((e) => ({
-          id: e.id,
-          role: e.role[0],
-          tickets: roleConfig.ticketsForRole.find((r) => r.roleId == e.role[0])
-            .amount,
-        }));
+        .map((e) => {
+          const ticketAmounts = roleConfig.ticketsForRole.find(
+            (r) => r.roleId == e.role[0]
+          ).amount;
+
+          ticketCountMessage.push(`<@${e.id}> - 🎟x${ticketAmounts}`);
+
+          return {
+            id: e.id,
+            role: e.role[0],
+            tickets: ticketAmounts,
+          };
+        });
 
       const randomBox = [];
       for (let u of hasRoleUsers) {
@@ -89,8 +97,12 @@ module.exports = {
 
       await channel.send(sendingMessage);
 
-      const randomBoxList = randomBox.map((e) => `<@${e}>`).join("\n");
-      await channel.send(randomBoxList);
+      for (let m of ticketCountMessage) {
+        await channel.send(m);
+      }
+
+      // const randomBoxList = randomBox.map((e) => `<@${e}>`).join("\n");
+      // await channel.send(randomBoxList);
 
       const selectedIdx = Math.floor(Math.random() * randomBox.length);
       if (randomBox[selectedIdx] === undefined) {
